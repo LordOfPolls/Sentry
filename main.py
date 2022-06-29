@@ -39,7 +39,7 @@ class Bot(Client):
             # description is used instead of fields as it allows for more ✨content✨
             description.append("**New Fields**")
             description += [
-                f"`{name}`: `{type(data[name]).__name__}` = `{textwrap.shorten(str(data[name]), width=75)}`"
+                f"`{name}`: `{type(data[name]).__name__}` = `{textwrap.shorten(str(data[name] or '[Empty String]'), width=75)}`"
                 for name in new_fields
             ]
             # breakpoint()
