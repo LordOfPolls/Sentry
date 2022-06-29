@@ -1,11 +1,7 @@
-import logging
-
 from naff import listen, MessageTypes
 from naff.api.events import RawGatewayEvent
 
 from extensions.template import Template
-
-log = logging.getLogger("Sentry")
 
 
 class MessageMonitor(Template):
@@ -54,7 +50,7 @@ class MessageMonitor(Template):
         # noinspection PyProtectedMember
         if not data["type"] in MessageTypes._value2member_map_:
             await self.update_types(data["type"])
-            log.warning(f"New Message Type Detected: {data['type']}")
+            self.log.warning(f"New Message Type Detected: {data['type']}")
 
             return await self.bot.report_new_feature(
                 f"New Message Type Detected", data, new_type=data["type"]
@@ -63,7 +59,7 @@ class MessageMonitor(Template):
         new_fields = [k for k in data if k not in self.known_fields]
         if new_fields:
             await self.update_fields(new_fields)
-            log.warning(f"New fields in message: {new_fields}")
+            self.log.warning(f"New fields in message: {new_fields}")
 
             return await self.bot.report_new_feature(
                 f"New fields in message", data, new_fields=new_fields

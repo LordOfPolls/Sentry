@@ -1,11 +1,7 @@
-import logging
-
 from naff import listen
 from naff.api.events import RawGatewayEvent
 
 from extensions.template import Template
-
-log = logging.getLogger("Sentry")
 
 
 class MemberMonitor(Template):
@@ -39,7 +35,7 @@ class MemberMonitor(Template):
         new_fields = [k for k in data if k not in self.known_fields]
         if new_fields:
             await self.update_fields(new_fields)
-            log.warning(f"New fields in member: {new_fields}")
+            self.log.warning(f"New fields in member: {new_fields}")
 
             return await self.bot.report_new_feature(
                 f"New fields in member", data, new_fields=new_fields

@@ -1,11 +1,7 @@
-import logging
-
 from naff import listen, ChannelTypes
 from naff.api.events import RawGatewayEvent
 
 from extensions.template import Template
-
-log = logging.getLogger("Sentry")
 
 
 class ChannelMonitor(Template):
@@ -65,7 +61,7 @@ class ChannelMonitor(Template):
         if not data["type"] in ChannelTypes._value2member_map_:
             if data["type"] not in self.known_types:
                 await self.update_types(data["type"])
-                log.warning(f"New Channel Type Detected: {data['type']}")
+                self.log.warning(f"New Channel Type Detected: {data['type']}")
 
                 return await self.bot.report_new_feature(
                     f"New Channel Type Detected", data
@@ -74,7 +70,7 @@ class ChannelMonitor(Template):
         new_fields = [k for k in data if k not in self.known_fields]
         if new_fields:
             await self.update_fields(new_fields)
-            log.warning(f"New fields in channels: {new_fields}")
+            self.log.warning(f"New fields in channels: {new_fields}")
 
             return await self.bot.report_new_feature(
                 f"New fields Detected in Channel Object", data, new_fields=new_fields

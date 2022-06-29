@@ -1,11 +1,7 @@
-import logging
-
 from naff import listen
 from naff.api.events import RawGatewayEvent
 
 from extensions.template import Template
-
-log = logging.getLogger("Sentry")
 
 
 class UserMonitor(Template):
@@ -47,7 +43,7 @@ class UserMonitor(Template):
         new_fields = [k for k in data if k not in self.known_fields]
         if new_fields:
             await self.update_fields(new_fields)
-            log.warning(f"New fields in user: {new_fields}")
+            self.log.warning(f"New fields in user: {new_fields}")
 
             return await self.bot.report_new_feature(
                 f"New fields in user", data, new_fields=new_fields
